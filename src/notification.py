@@ -44,7 +44,7 @@ class Notification:
     
     @staticmethod
     def send_water_notification(minutes=40):
-        """发送饮水提醒通知 - 使用Windows原生API"""
+        """发送饮水提醒通知 - 使用winotify"""
         import threading
         
         message = random.choice(Notification.WATER_MESSAGES)
@@ -52,12 +52,24 @@ class Notification:
         
         def show_notification():
             try:
-                # 使用Windows MessageBox
-                import ctypes
-                user32 = ctypes.windll.user32
-                user32.MessageBoxW(0, message, "牛马健康助手 💧 饮水提醒", 0x40)
+                # 使用winotify显示现代通知
+                from winotify import Notification
+                toast = Notification(
+                    app_id="牛马健康助手",
+                    title="💧 饮水提醒",
+                    msg=message,
+                    duration="short"
+                )
+                toast.show()
             except Exception as e:
-                print("通知发送失败: {}".format(e))
+                print("winotify通知失败: {}".format(e))
+                # 备用方案：使用Windows MessageBox
+                try:
+                    import ctypes
+                    user32 = ctypes.windll.user32
+                    user32.MessageBoxW(0, message, "牛马健康助手 💧 饮水提醒", 0x40)
+                except Exception as e2:
+                    print("备用方案也失败: {}".format(e2))
         
         thread = threading.Thread(target=show_notification)
         thread.daemon = True
@@ -65,7 +77,7 @@ class Notification:
     
     @staticmethod
     def send_sit_notification(minutes=60):
-        """发送久坐提醒通知 - 使用Windows原生API"""
+        """发送久坐提醒通知 - 使用winotify"""
         import threading
         
         message = random.choice(Notification.SIT_MESSAGES)
@@ -73,12 +85,24 @@ class Notification:
         
         def show_notification():
             try:
-                # 使用Windows MessageBox
-                import ctypes
-                user32 = ctypes.windll.user32
-                user32.MessageBoxW(0, message, "牛马健康助手 🏃 久坐提醒", 0x40)
+                # 使用winotify显示现代通知
+                from winotify import Notification
+                toast = Notification(
+                    app_id="牛马健康助手",
+                    title="🏃 久坐提醒",
+                    msg=message,
+                    duration="short"
+                )
+                toast.show()
             except Exception as e:
-                print("通知发送失败: {}".format(e))
+                print("winotify通知失败: {}".format(e))
+                # 备用方案：使用Windows MessageBox
+                try:
+                    import ctypes
+                    user32 = ctypes.windll.user32
+                    user32.MessageBoxW(0, message, "牛马健康助手 🏃 久坐提醒", 0x40)
+                except Exception as e2:
+                    print("备用方案也失败: {}".format(e2))
         
         thread = threading.Thread(target=show_notification)
         thread.daemon = True
@@ -86,17 +110,29 @@ class Notification:
     
     @staticmethod
     def send_custom_notification(title, message):
-        """发送自定义通知 - 使用Windows原生API"""
+        """发送自定义通知 - 使用winotify"""
         import threading
         
         def show_notification():
             try:
-                # 使用Windows MessageBox
-                import ctypes
-                user32 = ctypes.windll.user32
-                user32.MessageBoxW(0, message, title, 0x40)
+                # 使用winotify显示现代通知
+                from winotify import Notification
+                toast = Notification(
+                    app_id="牛马健康助手",
+                    title=title,
+                    msg=message,
+                    duration="short"
+                )
+                toast.show()
             except Exception as e:
-                print("通知发送失败: {}".format(e))
+                print("winotify通知失败: {}".format(e))
+                # 备用方案：使用Windows MessageBox
+                try:
+                    import ctypes
+                    user32 = ctypes.windll.user32
+                    user32.MessageBoxW(0, message, title, 0x40)
+                except Exception as e2:
+                    print("备用方案也失败: {}".format(e2))
         
         thread = threading.Thread(target=show_notification)
         thread.daemon = True

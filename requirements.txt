@@ -4,8 +4,8 @@
 # GUI框架
 PyQt5==5.12.3
 
-# Windows 10 通知
-win10toast==0.9
+# Windows 通知库
+winotify==1.1.0
 
 # 其他依赖（Python 3.6.8自带，无需安装）
 # - json: 内置
