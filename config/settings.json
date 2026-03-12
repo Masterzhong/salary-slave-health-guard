@@ -1,0 +1,11 @@
+{
+    "water_interval": 40,
+    "sit_interval": 60,
+    "work_hours": {
+        "start": "09:00",
+        "end": "18:00"
+    },
+    "auto_start": false,
+    "notifications_enabled": true,
+    "volume": 50
+}

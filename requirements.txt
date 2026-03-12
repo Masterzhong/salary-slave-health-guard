@@ -1,0 +1,18 @@
+# 牛马健康助手 - 依赖列表
+# Python 3.6.8 兼容
+
+# GUI框架
+PyQt5==5.12.3
+
+# Windows 10 通知
+win10toast==0.9
+
+# 其他依赖（Python 3.6.8自带，无需安装）
+# - json: 内置
+# - os: 内置
+# - sys: 内置
+# - time: 内置
+# - threading: 内置
+# - datetime: 内置
+# - random: 内置
+# - winreg: Windows内置
