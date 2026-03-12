@@ -40,9 +40,31 @@ class TrayIcon(QSystemTrayIcon):
         if os.path.exists(icon_path):
             self.setIcon(QIcon(icon_path))
         else:
-            # 使用默认图标
-            from PyQt5.QtWidgets import QApplication
-            self.setIcon(QIcon.fromTheme("face-smile"))
+            # 尝试从应用程序图标加载
+            try:
+                import sys
+                # 尝试从当前进程的图标获取
+                from PyQt5.QtWidgets import QApplication
+                app = QApplication.instance()
+                if app and hasattr(app, 'windowIcon') and not app.windowIcon().isNull():
+                    self.setIcon(app.windowIcon())
+                else:
+                    # 创建一个简单的图标
+                    self._create_default_icon()
+            except Exception as e:
+                print("设置图标失败: {}".format(e))
+                self._create_default_icon()
+    
+    def _create_default_icon(self):
+        """创建默认图标"""
+        try:
+            from PyQt5.QtGui import QPixmap, QPainter, QColor
+            from PyQt5.QtCore import QSize
+            pixmap = QPixmap(32, 32)
+            pixmap.fill(QColor(66, 133, 244))  # 蓝色背景
+            self.setIcon(QIcon(pixmap))
+        except Exception as e:
+            print("创建默认图标失败: {}".format(e))
     
     def create_menu(self):
         """创建托盘菜单"""

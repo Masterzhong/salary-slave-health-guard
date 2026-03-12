@@ -45,7 +45,6 @@ class Notification:
     @staticmethod
     def send_water_notification(minutes=40):
         """发送饮水提醒通知"""
-        from win10toast import ToastNotifier
         import threading
         
         message = random.choice(Notification.WATER_MESSAGES)
@@ -53,6 +52,7 @@ class Notification:
         
         def show_toast():
             try:
+                from win10toast import ToastNotifier
                 toaster = ToastNotifier()
                 toaster.show_toast(
                     "牛马健康助手 💧 饮水提醒",
@@ -61,7 +61,16 @@ class Notification:
                     threaded=True
                 )
             except Exception as e:
-                print("通知发送失败: {}".format(e))
+                print("win10toast失败，尝试使用备用方案: {}".format(e))
+                try:
+                    # 备用方案：使用 ctypes 调用 Windows API
+                    import ctypes
+                    from ctypes import wintypes
+                    user32 = ctypes.windll.user32
+                    # 简单弹窗提示
+                    user32.MessageBoxW(0, message, "牛马健康助手 💧 饮水提醒", 0x40)
+                except Exception as e2:
+                    print("备用方案也失败: {}".format(e2))
         
         thread = threading.Thread(target=show_toast)
         thread.daemon = True
@@ -70,7 +79,6 @@ class Notification:
     @staticmethod
     def send_sit_notification(minutes=60):
         """发送久坐提醒通知"""
-        from win10toast import ToastNotifier
         import threading
         
         message = random.choice(Notification.SIT_MESSAGES)
@@ -78,6 +86,7 @@ class Notification:
         
         def show_toast():
             try:
+                from win10toast import ToastNotifier
                 toaster = ToastNotifier()
                 toaster.show_toast(
                     "牛马健康助手 🏃 久坐提醒",
@@ -86,7 +95,14 @@ class Notification:
                     threaded=True
                 )
             except Exception as e:
-                print("通知发送失败: {}".format(e))
+                print("win10toast失败，尝试使用备用方案: {}".format(e))
+                try:
+                    # 备用方案：使用 ctypes 调用 Windows API
+                    import ctypes
+                    user32 = ctypes.windll.user32
+                    user32.MessageBoxW(0, message, "牛马健康助手 🏃 久坐提醒", 0x40)
+                except Exception as e2:
+                    print("备用方案也失败: {}".format(e2))
         
         thread = threading.Thread(target=show_toast)
         thread.daemon = True
