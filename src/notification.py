@@ -44,89 +44,61 @@ class Notification:
     
     @staticmethod
     def send_water_notification(minutes=40):
-        """发送饮水提醒通知"""
+        """发送饮水提醒通知 - 使用Windows原生API"""
         import threading
         
         message = random.choice(Notification.WATER_MESSAGES)
         message = message.format(minutes=minutes)
         
-        def show_toast():
+        def show_notification():
             try:
-                from win10toast import ToastNotifier
-                toaster = ToastNotifier()
-                toaster.show_toast(
-                    "牛马健康助手 💧 饮水提醒",
-                    message,
-                    duration=10,
-                    threaded=True
-                )
+                # 使用Windows MessageBox
+                import ctypes
+                user32 = ctypes.windll.user32
+                user32.MessageBoxW(0, message, "牛马健康助手 💧 饮水提醒", 0x40)
             except Exception as e:
-                print("win10toast失败，尝试使用备用方案: {}".format(e))
-                try:
-                    # 备用方案：使用 ctypes 调用 Windows API
-                    import ctypes
-                    from ctypes import wintypes
-                    user32 = ctypes.windll.user32
-                    # 简单弹窗提示
-                    user32.MessageBoxW(0, message, "牛马健康助手 💧 饮水提醒", 0x40)
-                except Exception as e2:
-                    print("备用方案也失败: {}".format(e2))
+                print("通知发送失败: {}".format(e))
         
-        thread = threading.Thread(target=show_toast)
+        thread = threading.Thread(target=show_notification)
         thread.daemon = True
         thread.start()
     
     @staticmethod
     def send_sit_notification(minutes=60):
-        """发送久坐提醒通知"""
+        """发送久坐提醒通知 - 使用Windows原生API"""
         import threading
         
         message = random.choice(Notification.SIT_MESSAGES)
         message = message.format(minutes=minutes)
         
-        def show_toast():
+        def show_notification():
             try:
-                from win10toast import ToastNotifier
-                toaster = ToastNotifier()
-                toaster.show_toast(
-                    "牛马健康助手 🏃 久坐提醒",
-                    message,
-                    duration=10,
-                    threaded=True
-                )
+                # 使用Windows MessageBox
+                import ctypes
+                user32 = ctypes.windll.user32
+                user32.MessageBoxW(0, message, "牛马健康助手 🏃 久坐提醒", 0x40)
             except Exception as e:
-                print("win10toast失败，尝试使用备用方案: {}".format(e))
-                try:
-                    # 备用方案：使用 ctypes 调用 Windows API
-                    import ctypes
-                    user32 = ctypes.windll.user32
-                    user32.MessageBoxW(0, message, "牛马健康助手 🏃 久坐提醒", 0x40)
-                except Exception as e2:
-                    print("备用方案也失败: {}".format(e2))
+                print("通知发送失败: {}".format(e))
         
-        thread = threading.Thread(target=show_toast)
+        thread = threading.Thread(target=show_notification)
         thread.daemon = True
         thread.start()
     
     @staticmethod
     def send_custom_notification(title, message):
-        """发送自定义通知"""
-        from win10toast import ToastNotifier
+        """发送自定义通知 - 使用Windows原生API"""
         import threading
         
-        def show_toast():
+        def show_notification():
             try:
-                toaster = ToastNotifier()
-                toaster.show_toast(
-                    title,
-                    message,
-                    duration=10,
-                    threaded=True
-                )
+                # 使用Windows MessageBox
+                import ctypes
+                user32 = ctypes.windll.user32
+                user32.MessageBoxW(0, message, title, 0x40)
             except Exception as e:
                 print("通知发送失败: {}".format(e))
         
-        thread = threading.Thread(target=show_toast)
+        thread = threading.Thread(target=show_notification)
         thread.daemon = True
         thread.start()
     
